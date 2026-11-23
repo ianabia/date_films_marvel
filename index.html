@@ -644,7 +644,7 @@ document.addEventListener('pointerdown',e=>{
     if(taken.has(k)){ b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); say('Essa já tá ocupada.'); return; }
     if(chosen===k){ chosen=null; draw(); say('Tudo bem, escolhe de novo.'); $('pickTxt').textContent='Toque numa poltrona'; $('confirm').disabled=true; return; }
     if(near.some(([a,bb])=>a===r&&bb===c)){
-      chosen=k; draw(); say('Perfeita. Do ladinho de mim. Toque de novo pra trocar.');
+      chosen=k; draw(); say('Perfeita. Do ladinho de mim.');
       $('pickTxt').innerHTML=`Fileira <b>${rows[r]}</b>, poltrona <b>${c}</b> · do lado da ${ESC(EU)}`; $('confirm').disabled=false; return;
     }
     taken.add(k); tries++; draw();
