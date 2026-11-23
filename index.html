@@ -392,16 +392,16 @@ const ESTREIA = { titulo: "Vingadores: Doutor Destino", data: "2026-12-17T19:00:
 /* =============================================== */
 const Apelido = APELIDO.charAt(0).toUpperCase()+APELIDO.slice(1);
 
+// Universo Cinematográfico Marvel — filmes em ordem cronológica (ordem da história)
 const FILMES = [
-  [1,"Homem de Ferro",2008],[1,"O Incrível Hulk",2008],[1,"Homem de Ferro 2",2010],[1,"Thor",2011],[1,"Capitão América: O Primeiro Vingador",2011],[1,"Os Vingadores",2012],
-  [2,"Homem de Ferro 3",2013],[2,"Thor: O Mundo Sombrio",2013],[2,"Capitão América 2: O Soldado Invernal",2014],[2,"Guardiões da Galáxia",2014],[2,"Vingadores: Era de Ultron",2015],[2,"Homem-Formiga",2015],
-  [3,"Capitão América: Guerra Civil",2016],[3,"Doutor Estranho",2016],[3,"Guardiões da Galáxia Vol. 2",2017],[3,"Homem-Aranha: De Volta ao Lar",2017],[3,"Thor: Ragnarok",2017],[3,"Pantera Negra",2018],
-  [3,"Vingadores: Guerra Infinita",2018],[3,"Homem-Formiga e a Vespa",2018],[3,"Capitã Marvel",2019],[3,"Vingadores: Ultimato",2019],[3,"Homem-Aranha: Longe de Casa",2019],
-  [4,"Viúva Negra",2021],[4,"Shang-Chi e a Lenda dos Dez Anéis",2021],[4,"Eternos",2021],[4,"Homem-Aranha: Sem Volta para Casa",2021],[4,"Doutor Estranho no Multiverso da Loucura",2022],[4,"Thor: Amor e Trovão",2022],[4,"Pantera Negra: Wakanda para Sempre",2022],
-  [5,"Homem-Formiga e a Vespa: Quantumania",2023],[5,"Guardiões da Galáxia Vol. 3",2023],[5,"As Marvels",2023],[5,"Deadpool & Wolverine",2024],[5,"Capitão América: Admirável Mundo Novo",2025],[5,"Thunderbolts*",2025],
-  [6,"Quarteto Fantástico: Primeiros Passos",2025],[6,"Homem-Aranha: Um Novo Dia",2026]
-].map(([fase,titulo,ano],i)=>({id:'f'+(i+1),n:i+1,fase,titulo,ano}));
-const FASES = {1:['#e5132d','O começo de tudo'],2:['#ff7a2e','O time se forma'],3:['#e8a800','A grande guerra'],4:['#1fb5e0','Um novo mundo'],5:['#8b5cf6','Multiverso em jogo'],6:['#ff4f8b','A reta final']};
+  [1,"Capitão América: O Primeiro Vingador",2011,"1942"],[1,"Quarteto Fantástico: Primeiros Passos",2025,"anos 60*"],[1,"Capitã Marvel",2019,"1995"],
+  [2,"Homem de Ferro",2008,"2008"],[2,"Homem de Ferro 2",2010,"2010"],[2,"O Incrível Hulk",2008,"2010"],[2,"Thor",2011,"2010"],[2,"Os Vingadores",2012,"2012"],
+  [3,"Thor: O Mundo Sombrio",2013,"2013"],[3,"Homem de Ferro 3",2013,"2013"],[3,"Capitão América 2: O Soldado Invernal",2014,"2014"],[3,"Guardiões da Galáxia",2014,"2014"],[3,"Guardiões da Galáxia Vol. 2",2017,"2014"],[3,"Vingadores: Era de Ultron",2015,"2015"],[3,"Homem-Formiga",2015,"2015"],
+  [4,"Capitão América: Guerra Civil",2016,"2016"],[4,"Viúva Negra",2021,"2016"],[4,"Pantera Negra",2018,"2016"],[4,"Homem-Aranha: De Volta ao Lar",2017,"2016"],[4,"Doutor Estranho",2016,"2016–17"],[4,"Thor: Ragnarok",2017,"2017"],[4,"Homem-Formiga e a Vespa",2018,"2018"],[4,"Vingadores: Guerra Infinita",2018,"2018"],[4,"Vingadores: Ultimato",2019,"2018–23"],
+  [5,"Shang-Chi e a Lenda dos Dez Anéis",2021,"2024"],[5,"Homem-Aranha: Longe de Casa",2019,"2024"],[5,"Homem-Aranha: Sem Volta para Casa",2021,"2024"],[5,"Eternos",2021,"2024"],[5,"Doutor Estranho no Multiverso da Loucura",2022,"2024"],[5,"Pantera Negra: Wakanda para Sempre",2022,"2025"],[5,"Thor: Amor e Trovão",2022,"2025"],
+  [6,"Homem-Formiga e a Vespa: Quantumania",2023,"2026"],[6,"Guardiões da Galáxia Vol. 3",2023,"2026"],[6,"As Marvels",2023,"2026"],[6,"Deadpool & Wolverine",2024,"2025"],[6,"Capitão América: Admirável Mundo Novo",2025,"2027"],[6,"Thunderbolts*",2025,"2027"],[6,"Homem-Aranha: Um Novo Dia",2026,"2028"]
+].map(([fase,titulo,ano,quando],i)=>({id:'f'+(i+1),n:i+1,fase,titulo,ano,quando}));
+const FASES = {1:['#e5132d','Antes de tudo'],2:['#ff7a2e','Nasce um time'],3:['#e8a800','Novas ameaças'],4:['#1fb5e0','A grande guerra'],5:['#8b5cf6','Um mundo novo'],6:['#ff4f8b','Rumo ao Destino']};
 
 const ESC = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let S = JSON.parse(document.getElementById('state').textContent); S.watched ??= {}; S.chats ??= {}; if(S.notes){ for(const k in S.notes) (S.chats[k]??=[]).push({a:'P',t:S.notes[k],d:new Date().toISOString()}); delete S.notes; } delete S.paid;
@@ -496,9 +496,9 @@ function ticket(x,cor,i,fresh,nx){
   const w=S.watched[x.id], dt=w?new Date(w+'T12:00').toLocaleDateString('pt-BR'):'', up=nx&&nx.id===x.id;
   return `<article class="tk ${w?'done':''} ${fresh===x.id?'fresh':''} ${up?'next-up':''}" data-id="${x.id}" style="--pc:${cor};animation-delay:${Math.min(i,8)*35}ms">
     ${up?'<span class="badge-next">PRÓXIMA SESSÃO</span>':''}
-    <div class="tk-main"><div class="pm"><span class="ph">FASE ${x.fase}</span><b class="big">${pad(x.n)}</b><i class="ln"></i></div>
-      <div class="tk-info"><div class="tk-meta"><i></i>Sessão ${pad(x.n)}</div><div class="tk-title">${ESC(x.titulo)}</div>
-        <div class="tk-foot"><span class="tk-yr">${x.ano}</span><span class="tk-hint">${up?'assistiu? puxe aqui →':'vale 1 beijo'}</span></div>
+    <div class="tk-main"><div class="pm"><span class="ph">PARTE ${x.fase}</span><b class="big">${pad(x.n)}</b><i class="ln"></i></div>
+      <div class="tk-info"><div class="tk-meta"><i></i>Sessão ${pad(x.n)} · lançado em ${x.ano}</div><div class="tk-title">${ESC(x.titulo)}</div>
+        <div class="tk-foot"><span class="tk-yr">${x.quando}</span><span class="tk-hint">${up?'assistiu? puxe aqui →':'vale 1 beijo'}</span></div>
         ${w&&(S.chats[x.id]||[]).length?chatPrev(x.id):""}<div class="tkacts"><button class="notebtn" data-note="${x.id}">${(S.chats[x.id]||[]).length?`conversa (${S.chats[x.id].length})`:"deixar recado"}</button><button class="undo" data-undo="${x.id}">desfazer</button></div></div>
     </div>
     <div class="stamp">ASSISTIDO<small>${dt} · +1 beijo</small></div>
@@ -553,7 +553,7 @@ $('root').innerHTML = `
       <div class="b"><small>SESSÃO</small><b>39</b><small>FINAL</small></div></div>
       <div class="lock" id="lock"></div></div>
   </section>
-  <footer>Feito por ${ESC(EU)} para a <em>${ESC(NOME)}</em><br>Filmes do Universo Cinematográfico Marvel em ordem de lançamento, de 2008 ao último lançado.</footer>
+  <footer>Feito por ${ESC(EU)} para a <em>${ESC(NOME)}</em><br>Filmes do Universo Cinematográfico Marvel em ordem cronológica da história, até o último lançado.<br>*Quarteto Fantástico se passa em outro universo, nos anos 60.</footer>
 </div></section>
 
 <div class="curtain" id="curtain"><div class="c l"></div><div class="c r"></div><div class="m"><small>SESSÃO CONFIRMADA</small><b>É um date!</b><span>te vejo no cinema, ${ESC(APELIDO)}</span></div></div>
@@ -672,12 +672,12 @@ function render(fresh){
   $('kDone').textContent=st.done; $('kLeft').textContent=st.left; $('kKiss').textContent=st.debt; $('kissN').textContent=st.debt; $('kissT').innerHTML=kissLine(st.debt,st.paid); $('gKiss').textContent=st.debt; 
   $('kPace').textContent=st.left?(st.left/st.days).toFixed(1).replace('.',',')+'/dia':'pronta';
   const nx=FILMES.find(f=>!S.watched[f.id]);
-  $('next').innerHTML = nx ? `<div class="pm" style="--pc:${FASES[nx.fase][0]}"><span class="ph">FASE ${nx.fase}</span><b class="big">${pad(nx.n)}</b><i class="ln"></i></div>
-      <div><small>Próxima sessão · Fase ${nx.fase}</small><h3>${ESC(nx.titulo)}</h3><div class="sub">${nx.ano} · vale 1 beijo · faltam ${st.left} filmes e ${st.days} dias</div></div>
+  $('next').innerHTML = nx ? `<div class="pm" style="--pc:${FASES[nx.fase][0]}"><span class="ph">PARTE ${nx.fase}</span><b class="big">${pad(nx.n)}</b><i class="ln"></i></div>
+      <div><small>Próxima sessão · Parte ${nx.fase}</small><h3>${ESC(nx.titulo)}</h3><div class="sub">se passa em ${nx.quando} · vale 1 beijo · faltam ${st.left} filmes e ${st.days} dias</div></div>
       <div class="acts"><button class="pill red" data-goto="${nx.id}">${ic('ticket')} Ir para o ingresso</button></div>`
     : `<div class="pm" style="--pc:#ffc94a"><span class="ph">FINAL</span><b class="big">39</b><i class="ln"></i></div><div><small>Maratona concluída</small><h3>Agora só falta o cinema</h3><div class="sub">Todos os ${FILMES.length} filmes destacados.</div></div>
       <div class="acts"><a class="pill red" href="#ingresso" style="text-decoration:none">Ver ingresso dourado</a></div>`;
-  $('tabs').innerHTML=`<button class="${ui.tab==='all'?'on':''}" data-tab="all" style="--c:#e5132d">Todas</button>`+Object.entries(FASES).map(([f,[c]])=>`<button class="${ui.tab===f?'on':''}" data-tab="${f}" style="--c:${c}"><span class="dt"></span>Fase ${f}</button>`).join('');
+  $('tabs').innerHTML=`<button class="${ui.tab==='all'?'on':''}" data-tab="all" style="--c:#e5132d">Todas</button>`+Object.entries(FASES).map(([f,[c]])=>`<button class="${ui.tab===f?'on':''}" data-tab="${f}" style="--c:${c}"><span class="dt"></span>Parte ${f}</button>`).join('');
   $('flt').innerHTML=[['all','Todos'],['left','Faltam'],['done','Assistidos']].map(([k,l])=>`<button class="${ui.flt===k?'on':''}" data-f="${k}">${l}</button>`).join('');
   const q=ui.q.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
   let html='';
@@ -685,10 +685,10 @@ function render(fresh){
     if(ui.tab!=='all' && ui.tab!==f) continue;
     const [cor,nome]=FASES[f], all=FILMES.filter(x=>x.fase==f);
     const list=all.filter(x=>{ if(ui.flt==='left'&&S.watched[x.id]) return false; if(ui.flt==='done'&&!S.watched[x.id]) return false;
-      if(q && !(x.titulo+' '+x.ano).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().includes(q)) return false; return true; });
+      if(q && !(x.titulo+' '+x.ano+' '+x.quando).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().includes(q)) return false; return true; });
     if(!list.length) continue;
     const d=all.filter(x=>S.watched[x.id]).length;
-    html+=`<section class="phase" id="fase-${f}" style="--pc:${cor}"><div class="ph-h"><div class="ph-n">${f}</div><div class="ph-t"><small>Fase ${f}</small><b>${nome}</b></div>
+    html+=`<section class="phase" id="fase-${f}" style="--pc:${cor}"><div class="ph-h"><div class="ph-n">${f}</div><div class="ph-t"><small>Parte ${f}</small><b>${nome}</b></div>
       <div class="ph-p">${d}/${all.length}<span class="b"><i style="width:${d/all.length*100}%"></i></span></div></div>
       <div class="tickets">${list.map((x,i)=>ticket(x,cor,i,fresh,nx)).join('')}</div></section>`;
   }
@@ -740,7 +740,7 @@ function mark(id,on){
   render(on?id:null); persist();
   if(on){ const f=FILMES.find(x=>x.id===id), st=stats();
     if(st.left===0){ toast(`Maratona completa! ${FILMES.length} beijos a cobrar no cinema`); hearts(50); setTimeout(()=>$('final').scrollIntoView({behavior:'smooth'}),700); }
-    else if(FILMES.filter(x=>x.fase===f.fase).every(x=>S.watched[x.id])){ toast(`Fase ${f.fase} completa! ${st.done} beijos na conta.`); hearts(20); }
+    else if(FILMES.filter(x=>x.fase===f.fase).every(x=>S.watched[x.id])){ toast(`Parte ${f.fase} completa! ${st.done} beijos na conta.`); hearts(20); }
     else if(st.done%10===0) toast(`${st.done} beijos acumulados. A cobrança é no cinema.`);
     else toast(`${f.titulo} assistido: +1 beijo na sua conta`);
   }
